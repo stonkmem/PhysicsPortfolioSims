@@ -24,31 +24,36 @@ def run(window, width, height):
     run = True
     t = pygame.time.Clock()
     dt = 0.001
-    pygame.display.set_caption('Projectile Motion with Linear Drag')
-    space = pymunk.Space();
+    pygame.display.set_caption('Projectile Motion with Quadratic Drag')
+    space = pymunk.Space()
     space.gravity = (0, 9.81)
     draw_options = pygame_util.DrawOptions(window)
 
     projno = projectile(space, (255, 255, 255, 100))
     projno.body.apply_impulse_at_local_point((70, -100), (0, 0))
-    projlin = projectile(space, (0, 255, 0, 100))
-    projlin.body.apply_impulse_at_local_point((70, -100), (0, 0))
+    projquad = projectile(space, (0, 255, 0, 100))
+    projquad.body.apply_impulse_at_local_point((70, -100), (0, 0))
     
     for i in range(width):#
         if i%100==0:
             pygame.draw.line(window, (0, 0, 255), (i, 0), (i, height))
     
-    for i in range(height):#
-        if i%100==0:
-            pygame.draw.line(window, (255, 0, 0), (0, i), (width, i))
+    for i in range(height):
+        v = height-i
+        if v%100==0:
+            pygame.draw.line(window, (255, 0, 0), (0, v), (width, v))
         
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
                 break
-        
-        projlin.body.apply_force_at_local_point(-projlin.body.velocity*0.1, (0, 0))
+        k = 9.8*0.001/15
+        p = -(28.97*9.81)/(9.8*8.3145)
+        c = 0.001
+        print(pow((1-k*projquad.body.position.dot((0, 1))), p))
+        F = -abs(projquad.body.velocity)*projquad.body.velocity * c * pow((1-k*projquad.body.position.dot((0, 1))), p)
+        projquad.body.apply_force_at_local_point(F, (0, 0))
 
         draw(space, window, draw_options)
         space.step(dt)
