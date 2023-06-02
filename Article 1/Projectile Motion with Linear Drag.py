@@ -4,9 +4,9 @@ from pymunk import pygame_util
 import sys
 #UPWARDS --> -y, RIGHT --> +x, TOP LEFT = (0, 0,)
 pygame.init()
-window = pygame.display.set_mode((1440, 790))
-width = 1440
-height = 790
+window = pygame.display.set_mode((1440, 700))
+width = 1400
+height = 700
 def draw(space, window, DrawOptions):
     space.debug_draw(DrawOptions)
     pygame.display.update()
