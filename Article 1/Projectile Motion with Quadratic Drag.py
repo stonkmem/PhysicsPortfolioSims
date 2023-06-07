@@ -30,9 +30,9 @@ def run(window, width, height):
     draw_options = pygame_util.DrawOptions(window)
 
     projno = projectile(space, (255, 255, 255, 100))
-    projno.body.apply_impulse_at_local_point((70, -100), (0, 0))
+    projno.body.apply_impulse_at_local_point((60, -100), (0, 0))
     projquad = projectile(space, (0, 255, 0, 100))
-    projquad.body.apply_impulse_at_local_point((70, -100), (0, 0))
+    projquad.body.apply_impulse_at_local_point((60, -100), (0, 0))
     
     for i in range(width):#
         if i%100==0:
@@ -49,7 +49,7 @@ def run(window, width, height):
                 run = False
                 break
         
-        projquad.body.apply_force_at_local_point(-abs(projquad.body.velocity)*projquad.body.velocity*0.01, (0, 0))
+        projquad.body.apply_force_at_local_point(-abs(projquad.body.velocity)*projquad.body.velocity*0.007, (0, 0))
 
         draw(space, window, draw_options)
         space.step(dt)

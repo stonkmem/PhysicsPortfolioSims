@@ -30,9 +30,9 @@ def run(window, width, height):
     draw_options = pygame_util.DrawOptions(window)
 
     projno = projectile(space, (255, 255, 255, 100))
-    projno.body.apply_impulse_at_local_point((70, -100), (0, 0))
+    projno.body.apply_impulse_at_local_point((60, -100), (0, 0))
     projlin = projectile(space, (0, 255, 0, 100))
-    projlin.body.apply_impulse_at_local_point((70, -100), (0, 0))
+    projlin.body.apply_impulse_at_local_point((60, -100), (0, 0))
     
     for i in range(width):#
         if i%100==0:
