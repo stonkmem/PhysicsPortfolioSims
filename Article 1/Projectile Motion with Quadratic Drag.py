@@ -1,7 +1,9 @@
 import pygame
 import pymunk
 from pymunk import pygame_util
+import matplotlib.pyplot as plt
 import sys
+import math
 #UPWARDS --> -y, RIGHT --> +x, TOP LEFT = (0, 0,)
 pygame.init()
 window = pygame.display.set_mode((1400, 700))
@@ -20,6 +22,9 @@ def projectile(space, color):
     space.add(body, proj)
     return proj
 
+x_ax=[]
+y_i = []
+y_r = []
 def run(window, width, height):
     run = True
     t = pygame.time.Clock()
@@ -42,7 +47,7 @@ def run(window, width, height):
         v = height-i
         if v%100==0:
             pygame.draw.line(window, (255, 0, 0), (0, v), (width, v))
-        
+    T=0
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -54,6 +59,16 @@ def run(window, width, height):
         draw(space, window, draw_options)
         space.step(dt)
         t.tick(1/dt)
+        x_ax.append(T)
+        y_i.append(-projno.body.velocity.dot((0, 1)))
+        y_r.append(-projquad.body.velocity.dot((0, 1)))
+        T += dt
+        print(T)
+        if T>=120:
+            run=False
+    plt.plot(x_ax, y_r)
+    plt.plot(x_ax, [y_r[-1] for i in x_ax])
+    plt.show()
     pygame.quit()
 if __name__ == "__main__":
     run(window, width, height)

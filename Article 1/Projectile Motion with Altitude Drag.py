@@ -1,6 +1,7 @@
 import pygame
 import pymunk
 from pymunk import pygame_util
+import matplotlib.pyplot as plt
 import sys
 #UPWARDS --> -y, RIGHT --> +x, TOP LEFT = (0, 0,)
 pygame.init()
@@ -13,13 +14,16 @@ def draw(space, window, DrawOptions):
 
 def projectile(space, color):
     body = pymunk.Body(body_type = pymunk.Body.DYNAMIC)
-    body.position = (0, height)
+    body.position = (0, height-1)
     proj = pymunk.Circle(body, radius = 1.0)
     proj.mass = 1
     proj.color = color
     space.add(body, proj)
     return proj
 
+x_ax=[]
+y_i = []
+y_r = []
 def run(window, width, height):
     run = True
     t = pygame.time.Clock()
@@ -42,22 +46,32 @@ def run(window, width, height):
         v = height-i
         if v%100==0:
             pygame.draw.line(window, (255, 0, 0), (0, v), (width, v))
-        
+    T=0
     while run:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
                 break
-        k = 9.8*0.001/15
+        k = 6.5*0.001/15
         p = -(28.97*9.81)/(9.8*8.3145)
-        c = 0.0007
-        print(pow((1-k*projquad.body.position.dot((0, 1))), p))
-        F = -abs(projquad.body.velocity)*projquad.body.velocity * c * pow((1-k*projquad.body.position.dot((0, 1))), p)
+        c = 0.007
+        y = height-projquad.body.position.dot((0, 1))
+        F = -abs(projquad.body.velocity)*projquad.body.velocity * c * pow((1-k*y), p)
         projquad.body.apply_force_at_local_point(F, (0, 0))
 
         draw(space, window, draw_options)
         space.step(dt)
         t.tick(1/dt)
+        x_ax.append(T)
+        y_r.append(-projquad.body.velocity.dot((0, 1)))
+        y_i.append(-F.dot((0, 1)))
+        T += dt
+        print(y)
+        if T>=25:
+            run=False
+    plt.plot(x_ax, y_r)
+    plt.plot(x_ax, y_i)
+    plt.show()
     pygame.quit()
 if __name__ == "__main__":
     run(window, width, height)
